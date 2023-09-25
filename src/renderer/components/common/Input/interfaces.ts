@@ -7,4 +7,5 @@ export interface Props {
   name: string;
   type: string;
   customClassNames?: string;
+  countryCode?: string;
 }

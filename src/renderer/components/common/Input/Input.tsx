@@ -9,16 +9,18 @@ export default function Input({
   name,
   type,
   customClassNames,
+  countryCode,
 }: Props) {
   const isPhone = type === 'tel';
   const classNames = ['custom-input'];
   if (customClassNames) classNames.push(...customClassNames.split(' '));
+  if (isPhone) classNames.push('is-phone-input');
 
   return (
     <div className={styles.wrapper}>
       {isPhone && (
         <button type="button" className={styles['phone-button']}>
-          +1
+          {countryCode}
         </button>
       )}
       <input

@@ -3,4 +3,5 @@ export interface Props {
   text: string;
   buttonClassNames?: string;
   textClassNames?: string;
+  disabled?: boolean;
 }

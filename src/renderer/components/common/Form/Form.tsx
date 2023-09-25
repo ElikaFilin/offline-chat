@@ -4,7 +4,13 @@ import { Props } from './interfaces';
 import Button from '../Button/Button';
 import useTranslate from '../../../hooks/useTranslate';
 
-export default function Form({ children, handleNext, isLoading }: Props) {
+export default function Form({
+  children,
+  handleNext,
+  isLoading,
+  disabledButton,
+  buttonClassName,
+}: Props) {
   const t = useTranslate();
 
   return (
@@ -15,6 +21,8 @@ export default function Form({ children, handleNext, isLoading }: Props) {
         <Button
           onClick={handleNext}
           text={!isLoading ? t('Next') : t('Loading...')}
+          disabled={disabledButton}
+          buttonClassNames={buttonClassName}
         />
       </form>
     </div>

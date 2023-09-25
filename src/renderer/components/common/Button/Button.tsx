@@ -7,6 +7,7 @@ export default function Button({
   text,
   buttonClassNames,
   textClassNames,
+  disabled = false,
 }: Props) {
   const defaultButtonClassNames = ['default-button'];
   const defaultTextClassNames = ['default-text-button'];
@@ -19,6 +20,7 @@ export default function Button({
       className={getCustomClassNames(defaultButtonClassNames, styles).join(' ')}
       onClick={onClick}
       type="button"
+      disabled={disabled}
     >
       <span
         className={getCustomClassNames(defaultTextClassNames, styles).join(' ')}

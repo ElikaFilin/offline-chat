@@ -3,12 +3,15 @@ import { useMutation } from 'react-query';
 import useTranslate from '../../hooks/useTranslate';
 import ONBOARDING, {
   getInputName,
+  getInputsValue,
   getInputType,
   getPlaceholdersText,
 } from './constants';
 import { Form, Header, Input } from '../../components/common';
 import useClickOnce from '../../hooks/useClickOnce';
 import useRequest from '../../hooks/useRequest';
+import { getFormattedPhoneNumber } from '../../utils';
+import styles from './onboarding.module.scss';
 
 export default function Onboarding() {
   const t = useTranslate();
@@ -17,13 +20,16 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
     phone: '',
-    names: { firstName: '', lastName: '' },
+    firstName: '',
+    lastName: '',
   });
-  const [code, setCode] = useState('');
+  const [smsCode, setSmsCode] = useState('');
+  const [countryCode] = useState('+1');
   const isSecondStep = step === 2;
   const isThirdStep = step === 3;
+  const validation = isSecondStep && !smsCode;
 
-  const { isLoading, data, mutateAsync } = useMutation(
+  const { isLoading, mutateAsync } = useMutation(
     'auth_send_phone_number',
     request
   );
@@ -33,27 +39,11 @@ export default function Onboarding() {
       case 1:
         return t(ONBOARDING.form.step1.title);
       case 2:
-        return userData.phone;
+        return `${countryCode} ${getFormattedPhoneNumber(userData.phone)}`;
       case 3:
         return t(ONBOARDING.form.step3.title);
       default:
         return t('Unknown step title. Connect to support please');
-    }
-  };
-
-  const getInputsValue = (value: number) => {
-    switch (value) {
-      case 1:
-        return { first: userData.phone, second: null };
-      case 2:
-        return { first: code, second: null };
-      case 3:
-        return {
-          first: userData.names.firstName,
-          second: userData.names.lastName,
-        };
-      default:
-        return { first: '', second: '' };
     }
   };
 
@@ -63,52 +53,77 @@ export default function Onboarding() {
   ) => {
     switch (value) {
       case 1:
-        return () =>
-          setUserData((pv) => {
-            return {
-              ...pv,
-              phone: event.target.value,
-            };
-          });
+        setUserData((pv) => {
+          return {
+            ...pv,
+            phone: event.target.value,
+          };
+        });
+        break;
       case 2:
-        return () => setCode(event.target.value);
+        setSmsCode(event.target.value);
+        break;
       case 3:
-        return () =>
-          setUserData((pv) => {
-            return {
-              ...pv,
-              names: { ...pv.names, firstName: event.target.value },
-            };
-          });
+        setUserData((pv) => {
+          return {
+            ...pv,
+            firstName: event.target.value,
+          };
+        });
+        break;
       default:
-        return () => {};
     }
   };
 
   const handleNext = async () => {
-    await mutateAsync({ phone: userData });
+    // todo - send different requests
+    const res = await mutateAsync({ phone: userData.phone });
     resetClick();
-    if (data) setStep((value) => value + 1);
+    // todo - set token on third step
+    if (res) setStep((value) => value + 1);
+  };
+
+  const handleSecondInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserData((pv) => {
+      return {
+        ...pv,
+        lastName: event.target.value,
+      };
+    });
   };
 
   return (
-    <Form handleNext={startClick(handleNext)} isLoading={isLoading}>
+    <Form
+      handleNext={startClick(handleNext)}
+      isLoading={isLoading}
+      disabledButton={validation}
+      buttonClassName={validation ? 'disabled-button' : ''}
+    >
       <Header>{getFormTitle(step)}</Header>
       <>
         {isSecondStep && (
-          <span>{t('We have sent you an SMS with the code')}</span>
+          <span className={styles['sub-title']}>
+            {t(ONBOARDING.form.step2.subTitle)}
+          </span>
         )}
         <Input
           type={getInputType(step).first}
           name={getInputName(step).first}
-          value={getInputsValue(step).first}
+          value={getInputsValue(step, userData, smsCode).first}
           placeholder={getPlaceholdersText(step).first}
+          countryCode={countryCode}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             handleFirstInputOnChange(e, step)
           }
         />
         {isThirdStep && (
-          <Input placeholder={} value={} onChange={} name={} type={} />
+          <Input
+            placeholder={getPlaceholdersText(step).second}
+            value={getInputsValue(step, userData, smsCode).second}
+            onChange={handleSecondInputChange}
+            name={getInputName(step).second}
+            type={getInputType(step).second}
+          />
         )}
       </>
     </Form>

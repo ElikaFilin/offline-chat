@@ -4,4 +4,6 @@ export interface Props {
   children: ReactElement;
   handleNext: () => void;
   isLoading: boolean;
+  disabledButton: boolean;
+  buttonClassName: string;
 }
