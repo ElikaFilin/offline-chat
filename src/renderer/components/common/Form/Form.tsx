@@ -1,4 +1,4 @@
-import styles from '../../../screens/onboarding/onboarding.module.scss';
+import styles from './form.module.scss';
 import SignUpImage from '../../../../../assets/images/sign-up.svg';
 import { Props } from './interfaces';
 import Button from '../Button/Button';

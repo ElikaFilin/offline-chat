@@ -3,7 +3,7 @@ import './App.scss';
 import { QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import AuthManager from './AuthManager';
-import Chat from './screens';
+import Chat from './screens/chat/Chat';
 import Onboarding from './screens/onboarding/Onboarding';
 import queryClient from './queryClient';
 import PageNotFound from './screens/common/PageNotFound';
