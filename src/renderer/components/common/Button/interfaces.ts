@@ -1,7 +1,8 @@
 export interface Props {
   onClick: () => void;
-  text: string;
+  text?: string;
   buttonClassNames?: string;
   textClassNames?: string;
   disabled?: boolean;
+  icon?: string;
 }

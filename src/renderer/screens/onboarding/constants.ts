@@ -70,23 +70,6 @@ export const getInputType = (value: number) => {
   }
 };
 
-export const getInputName = (value: number) => {
-  switch (value) {
-    case 1: {
-      return { first: 'phone', second: '' };
-    }
-    case 2: {
-      return { first: 'code', second: '' };
-    }
-    case 3: {
-      return { first: 'firstName', second: 'lastName' };
-    }
-    default: {
-      return { first: '', second: '' };
-    }
-  }
-};
-
 export const getInputsValue = (value: number, userData, smsCode) => {
   switch (value) {
     case 1:
@@ -102,5 +85,7 @@ export const getInputsValue = (value: number, userData, smsCode) => {
       return { first: '', second: '' };
   }
 };
+
+export const countryCode = '+1';
 
 export default ONBOARDING;

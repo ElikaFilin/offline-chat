@@ -1,4 +1,7 @@
 // todo - implement NotFound page
+import useTranslate from '../../hooks/useTranslate';
+
 export default function PageNotFound() {
-  return <h3>Page Not Found</h3>;
+  const t = useTranslate();
+  return <h3>{t('Page Not Found')}</h3>;
 }

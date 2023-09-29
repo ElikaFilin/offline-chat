@@ -8,6 +8,7 @@ export default function Button({
   buttonClassNames,
   textClassNames,
   disabled = false,
+  icon,
 }: Props) {
   const defaultButtonClassNames = ['default-button'];
   const defaultTextClassNames = ['default-text-button'];
@@ -22,11 +23,16 @@ export default function Button({
       type="button"
       disabled={disabled}
     >
-      <span
-        className={getCustomClassNames(defaultTextClassNames, styles).join(' ')}
-      >
-        {text}
-      </span>
+      {text && (
+        <span
+          className={getCustomClassNames(defaultTextClassNames, styles).join(
+            ' '
+          )}
+        >
+          {text}
+        </span>
+      )}
+      {icon && <img src={icon} alt="icon" />}
     </button>
   );
 }

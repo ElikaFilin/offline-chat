@@ -6,8 +6,7 @@ export default function Input({
   placeholder,
   value,
   onChange,
-  name,
-  type,
+  type = 'text',
   customClassNames,
   countryCode,
 }: Props) {
@@ -27,7 +26,6 @@ export default function Input({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        name={name}
         type={type}
         className={getCustomClassNames(classNames, styles).join(' ')}
       />

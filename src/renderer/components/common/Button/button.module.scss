@@ -5,6 +5,9 @@
   border-radius: 0.625rem;
   background: var(--colors-text-primary);
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .default-text-button {
@@ -20,4 +23,17 @@
 
 .disabled-button {
   background: var(--colors-background-disabled-button);
+}
+
+.send-message-button {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--colors-tint-light-primary);
+  padding: 0;
+  border-radius: 56.25rem;
+
+  img {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 }

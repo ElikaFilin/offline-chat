@@ -3,20 +3,22 @@ import './App.scss';
 import { QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import AuthManager from './AuthManager';
-import Chat from './screens/chat/Chat';
-import Onboarding from './screens/onboarding/Onboarding';
+import ChatScreen from './screens/chat/Chat';
+import OnboardingScreen from './screens/onboarding/Onboarding';
 import queryClient from './queryClient';
 import PageNotFound from './screens/common/PageNotFound';
+import chatKey from './screens/chat/constants';
 
 export default function App() {
+  window.electron.store.set(chatKey, []); // init chats store
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <Router>
         <Routes>
           <Route path="/" element={<AuthManager />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/chat" element={<ChatScreen />} />
+          <Route path="/onboarding" element={<OnboardingScreen />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

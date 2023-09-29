@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import useTranslate from '../../hooks/useTranslate';
 import ONBOARDING, {
-  getInputName,
+  countryCode,
   getInputsValue,
   getInputType,
   getPlaceholdersText,
@@ -11,11 +11,15 @@ import ONBOARDING, {
 import { Form, Header, Input } from '../../components/common';
 import useClickOnce from '../../hooks/useClickOnce';
 import useRequest from '../../hooks/useRequest';
-import { authenticate, getFormattedPhoneNumber } from '../../utils';
+import {
+  authenticate,
+  getFormattedPhoneNumber,
+  getRandomNumber,
+} from '../../utils';
 import styles from './onboarding.module.scss';
 import handleOnChange from './handlers';
 
-export default function Onboarding() {
+export default function OnboardingScreen() {
   const t = useTranslate();
   const navigate = useNavigate();
   const { startClick, resetClick } = useClickOnce();
@@ -27,12 +31,12 @@ export default function Onboarding() {
   const userNamesRequest = useRequest('POST', 'auth');
   const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
+    id: getRandomNumber(),
     phone: '',
     firstName: '',
     lastName: '',
   });
   const [smsCode, setSmsCode] = useState('');
-  const [countryCode] = useState('+1');
   const isFirstStep = step === 1;
   const isSecondStep = step === 2;
   const isThirdStep = step === 3;
@@ -69,7 +73,7 @@ export default function Onboarding() {
       });
       if (authenticate(response, userData)) navigate('/chat');
     }
-    if (response) setStep((prevState) => prevState + 1);
+    if (!response.error) setStep((prevState) => prevState + 1);
   };
 
   const handleSecondInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -101,21 +105,21 @@ export default function Onboarding() {
         )}
         <Input
           type={getInputType(step).first}
-          name={getInputName(step).first}
           value={getInputsValue(step, userData, smsCode).first}
           placeholder={getPlaceholdersText(step).first}
           countryCode={countryCode}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
             handleOnChange(step, setUserData, setSmsCode, event)
           }
+          customClassNames="bottom-margin"
         />
         {isThirdStep && (
           <Input
             placeholder={getPlaceholdersText(step).second}
             value={getInputsValue(step, userData, smsCode).second}
             onChange={handleSecondInputChange}
-            name={getInputName(step).second}
             type={getInputType(step).second}
+            customClassNames="bottom-margin"
           />
         )}
       </>
