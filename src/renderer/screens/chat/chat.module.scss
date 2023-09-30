@@ -1,8 +1,9 @@
 .sidebar {
   width: 22.5rem;
-  height: 100vh;
+  height: calc(100vh - 1rem);
   background: var(--colors-background-light-secondary);
   position: relative;
+  margin-top: 1rem;
 
   .add-chat-button {
     width: 3.75rem;

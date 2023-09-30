@@ -27,12 +27,6 @@ const electronHandler = {
     set(key, value): void {
       ipcRenderer.send('electron-store-set', key, value);
     },
-    setObject(obj): void {
-      ipcRenderer.send('electron-store-set-object', obj);
-    },
-    has(key): boolean {
-      return ipcRenderer.sendSync('electron-store-has', key);
-    },
     addMessage(value, id) {
       return ipcRenderer.send('electron-store-add-message', value, id);
     },

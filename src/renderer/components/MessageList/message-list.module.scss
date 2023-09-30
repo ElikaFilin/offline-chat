@@ -1,0 +1,72 @@
+$padding: 1rem;
+
+.wrapper {
+  position: absolute;
+  bottom: 4.5rem;
+  overflow-y: scroll;
+  padding: 0 $padding;
+  width: calc(100% - $padding * 2);
+  height: 34rem;
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+
+  .error {
+    border: 1px #f00;
+    background-color: #fdd;
+
+    &--serious {
+      @extend .error;
+      border-width: 3px;
+    }
+  }
+
+  .message-container {
+    max-width: calc(33.5rem - $padding * 2);
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.05rem;
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+
+    &-user {
+      @extend .message-container;
+      background: var(--colors-tint-light-primary);
+      color: var(--colors-text-secondary);
+      align-self: flex-end;
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 2.1rem;
+        right: -0.31rem;
+        height: 1.3125rem;
+      }
+    }
+
+    &-interlocutor {
+      @extend .message-container;
+      background: var(--colors-background-light-tertiary);
+      color: var(--colors-text-primary);
+      align-self: flex-start;
+      position: relative;
+
+      img {
+        position: absolute;
+        top: 2.1rem;
+        left: -0.31rem;
+        height: 1.3125rem;
+      }
+    }
+  }
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}

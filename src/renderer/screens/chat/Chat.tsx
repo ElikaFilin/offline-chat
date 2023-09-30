@@ -4,12 +4,15 @@ import NewMessageIcon from '../../../../assets/icons/NewMessageIcon.svg';
 import { getRandomNumber } from '../../utils';
 import { ChatList } from '../../components';
 import chatKey from './constants';
-import Conversation from '../../components/conversation/Conversation';
+import Dialog from '../../components/Dialog/Dialog';
 import { ChatData } from '../../components/ChatItem/interfaces';
 import Avatar from '../../../../assets/images/avatar.png';
+import { useElectronStore } from '../../hooks/ElectronStoreContext';
 
 export default function ChatScreen() {
   const [openedChat, setOpenedChat] = useState<ChatData>();
+  const [newMessage, setNewMessage] = useState<string>('');
+  const { forceRerender } = useElectronStore();
 
   const handleAddChatButton = () => {
     const chatData = {
@@ -22,13 +25,25 @@ export default function ChatScreen() {
     setOpenedChat(chatData);
   };
 
+  const handleSendMessage = () => {
+    window.electron.store.addMessage(newMessage, openedChat?.id);
+    forceRerender();
+  };
+
   return (
     <section className={styles.sidebar}>
       <ChatList
         chats={window.electron.store.get(chatKey)}
         setOpenedChat={setOpenedChat}
       />
-      {openedChat && <Conversation chat={openedChat} />}
+      {openedChat && (
+        <Dialog
+          handleSendMessage={handleSendMessage}
+          chat={openedChat}
+          setNewMessage={setNewMessage}
+          newMessage={newMessage}
+        />
+      )}
       <button
         className={styles['add-chat-button']}
         type="button"
