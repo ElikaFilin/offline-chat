@@ -1,4 +1,4 @@
-interface Message {
+export interface Message {
   id: number;
   text: string;
   createdAt: Date;
@@ -10,10 +10,10 @@ export interface ChatData {
   id: number;
   name: string;
   avatar: string;
-  messages: Message[];
 }
 
 export interface Props {
   chat: ChatData;
+  messageList: Message[];
   onClick: () => void;
 }

@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import Store from 'electron-store';
-import { ChatData } from '../components/ChatItem/interfaces';
+import { Message } from '../components/ChatItem/interfaces';
 
 export default function getCustomClassNames(classNames, stylesObj) {
   return classNames.map((name) => stylesObj[name]);
@@ -33,10 +33,15 @@ export function getRandomNumber() {
   return Math.floor(Math.random() * 10e9);
 }
 
-export function getSenderId(store: Store, chat: ChatData) {
+export function getSenderId(
+  store: Store,
+  messages: Message[] | undefined,
+  chatId: number
+) {
   const userData = store.get('userData');
-  if (chat.messages.length % 2 === 0) {
-    return chat.id;
+  if (!messages) return userData.id;
+  if (messages.length % 2 !== 0) {
+    return chatId;
   }
   return userData.id;
 }

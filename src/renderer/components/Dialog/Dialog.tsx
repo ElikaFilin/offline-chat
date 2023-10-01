@@ -2,7 +2,7 @@ import { ChangeEvent } from 'react';
 import { Props } from './interfaces';
 import styles from './dialog.module.scss';
 import { Button, Input } from '../common';
-import ArrowUp from '../../../../assets/icons/ArrowUp.svg';
+import ArrowUp from '../../../../assets/icons/arrow-up.svg';
 import useTranslate from '../../hooks/useTranslate';
 import MessageList from '../MessageList/MessageList';
 
@@ -11,6 +11,7 @@ export default function Dialog({
   setNewMessage,
   newMessage,
   handleSendMessage,
+  messageList,
 }: Props) {
   const t = useTranslate();
 
@@ -24,7 +25,7 @@ export default function Dialog({
         <img src={chat.avatar} alt="avatar" />
         <span>{chat.name}</span>
       </header>
-      <MessageList />
+      <MessageList messageList={messageList} newMessage={newMessage} />
       <div className={styles['input-wrapper']}>
         <Input
           customClassNames="conversation-input"

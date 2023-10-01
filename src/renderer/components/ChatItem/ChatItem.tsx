@@ -3,11 +3,11 @@ import { Props } from './interfaces';
 import styles from './chat-item.module.scss';
 import useTranslate from '../../hooks/useTranslate';
 
-export default function ChatItem({ chat, onClick }: Props) {
+export default function ChatItem({ chat, onClick, messageList }: Props) {
   const t = useTranslate();
-  const isEmptyMessages = !!chat.messages.length;
+  const isEmptyMessages = !!messageList.length;
   const lastMessage = isEmptyMessages
-    ? chat.messages[chat.messages.length - 1].text
+    ? messageList[messageList.length - 1].text
     : t('No messages');
 
   return (
@@ -18,9 +18,7 @@ export default function ChatItem({ chat, onClick }: Props) {
         <div className={styles['last-message']}>{lastMessage}</div>
         {isEmptyMessages && (
           <span className={styles.time}>
-            {moment(chat.messages[chat.messages.length - 1].createdAt).format(
-              'LT'
-            )}
+            {moment(messageList[messageList.length - 1].createdAt).format('LT')}
           </span>
         )}
       </div>

@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
-import chatKey from '../renderer/screens/chat/constants';
+import chatKey, { MessagesKey } from '../renderer/screens/chat/constants';
 import { getRandomNumber, getSenderId } from '../renderer/utils';
 
 const store = new Store();
@@ -14,19 +14,19 @@ ipcMain.on('electron-store-set', (event, key, value) => {
   store.set(key, value);
 });
 
-ipcMain.on('electron-store-add-message', (event, value, id) => {
-  const chats = store.get(chatKey);
-  const chat = chats.find((item) => item.id === id);
+ipcMain.on('electron-store-add-message', (event, value, chatId) => {
+  const messageKey = `${MessagesKey}_${chatId}`;
+  const messages = store.get(messageKey);
   const message = {
     id: getRandomNumber(),
     text: value,
     createdAt: new Date(),
-    senderId: getSenderId(store, chat),
-    seen: true, // to change seen property dynamically need to implement online chat, not offline
+    senderId: getSenderId(store, messages, chatId),
+    seen: true, // todo - to change seen property dynamically need to implement online chat, not offline
   };
-  chat.messages.push(message);
-  store.set(chatKey, chats);
-  event.reply('force-update-component', true);
+
+  if (!messages) store.set(messageKey, [message]);
+  else store.set(messageKey, [...messages, message]);
 });
 
 ipcMain.on('electron-store-add-chat', (event, value) => {

@@ -6,10 +6,14 @@ $padding: 1rem;
   overflow-y: scroll;
   padding: 0 $padding;
   width: calc(100% - $padding * 2);
-  height: 34rem;
+  max-height: 34rem;
   margin: 1rem 0;
   display: flex;
   flex-direction: column;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .error {
     border: 1px #f00;
@@ -35,6 +39,24 @@ $padding: 1rem;
       margin-bottom: 0.5rem;
     }
 
+    .tail {
+      position: absolute;
+      bottom: 0;
+      height: 1.3125rem;
+    }
+
+    .time {
+      font-size: 0.625rem;
+      line-height: 0.8125rem;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+
+      img {
+        margin-left: 0.25rem;
+      }
+    }
+
     &-user {
       @extend .message-container;
       background: var(--colors-tint-light-primary);
@@ -42,11 +64,9 @@ $padding: 1rem;
       align-self: flex-end;
       position: relative;
 
-      img {
-        position: absolute;
-        top: 2.1rem;
+      .tail-right {
+        @extend .tail;
         right: -0.31rem;
-        height: 1.3125rem;
       }
     }
 
@@ -57,16 +77,10 @@ $padding: 1rem;
       align-self: flex-start;
       position: relative;
 
-      img {
-        position: absolute;
-        top: 2.1rem;
+      .tail-left {
+        @extend .tail;
         left: -0.31rem;
-        height: 1.3125rem;
       }
     }
   }
-}
-
-.wrapper::-webkit-scrollbar {
-  display: none;
 }
