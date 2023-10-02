@@ -32,6 +32,7 @@ export default function Dialog({
           placeholder={t('Message')}
           onChange={handleOnChange}
           value={newMessage}
+          onSubmit={handleSendMessage}
         />
         <Button
           onClick={handleSendMessage}

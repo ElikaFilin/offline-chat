@@ -64,7 +64,7 @@ export default function OnboardingScreen() {
     let response;
     if (isFirstStep)
       response = await phoneMutation.mutateAsync({ phone: userData.phone });
-    else if (isSecondStep)
+    else if (isSecondStep && smsCode)
       response = await submitCodeMutation.mutateAsync({ code: smsCode });
     else if (isThirdStep) {
       response = await userNamesMutation.mutateAsync({
@@ -73,7 +73,7 @@ export default function OnboardingScreen() {
       });
       if (authenticate(response, userData)) navigate('/chat');
     }
-    if (!response.error) setStep((prevState) => prevState + 1);
+    if (response && !response.error) setStep((prevState) => prevState + 1);
   };
 
   const handleSecondInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -112,6 +112,7 @@ export default function OnboardingScreen() {
             handleOnChange(step, setUserData, setSmsCode, event)
           }
           customClassNames="bottom-margin"
+          onSubmit={handleNext}
         />
         {isThirdStep && (
           <Input
@@ -120,6 +121,7 @@ export default function OnboardingScreen() {
             onChange={handleSecondInputChange}
             type={getInputType(step).second}
             customClassNames="bottom-margin"
+            onSubmit={handleNext}
           />
         )}
       </>

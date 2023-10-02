@@ -16,6 +16,7 @@ export default function ChatScreen() {
   const { forceRerender } = useElectronStore();
 
   const handleAddChatButton = () => {
+    if (window.electron.store.get(chatKey).length) return;
     const chatData = {
       id: getRandomNumber(),
       name: 'Darryl',
