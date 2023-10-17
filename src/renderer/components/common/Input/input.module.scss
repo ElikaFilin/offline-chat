@@ -1,6 +1,7 @@
 $padding-left: 0.75rem;
 $horizontal-input-padding: 1rem;
 $vertical-input-padding: 0.5rem;
+$border: 0.5px;
 
 .wrapper {
   display: flex;
@@ -12,16 +13,16 @@ $vertical-input-padding: 0.5rem;
   }
 
   .custom-input {
-    width: calc(18.75rem - $padding-left);
-    height: 2.75rem;
-    padding-left: $padding-left;
+    width: calc(18.75rem - $padding-left - $border * 2);
+    height: calc(2.75rem - 1px);
+    padding: 0 0 0 $padding-left;
     border-radius: 0.625rem;
-    border: 0.5px solid var(--colors-border-light);
+    border: $border solid var(--colors-border-light);
   }
 
   .is-phone-input {
-    width: calc(18.75rem - 50px + $padding-left);
-    padding-left: 50px;
+    width: calc(18.75rem - 52px - $border * 2);
+    padding-left: 52px;
   }
 
   .custom-input:focus {
@@ -39,10 +40,10 @@ $vertical-input-padding: 0.5rem;
   .phone-button {
     width: 2.25rem;
     height: 2.25rem;
-    margin-right: -50px;
+    margin-right: -52px;
     position: absolute;
     left: 0.25rem;
-    top: 0.3rem;
+    top: 0.25rem;
     border: none;
     border-radius: 0.625rem;
     background: var(--colors-background-light-secondary);
@@ -54,6 +55,7 @@ $vertical-input-padding: 0.5rem;
     font-weight: 400;
     line-height: 1.125rem;
     font-family: 'SF Pro Regular', sans-serif;
+    padding: 0;
   }
 
   .conversation-input {
