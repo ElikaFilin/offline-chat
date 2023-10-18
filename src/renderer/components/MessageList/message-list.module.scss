@@ -33,7 +33,7 @@ $padding: 1rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    letter-spacing: 0.05rem;
+    letter-spacing: 0.056rem;
 
     &:not(:last-child) {
       margin-bottom: 0.5rem;
@@ -48,12 +48,15 @@ $padding: 1rem;
     .time {
       font-size: 0.625rem;
       line-height: 0.8125rem;
-      display: flex;
-      justify-content: end;
-      align-items: center;
+      float: right;
+      margin-left: 4px;
+      display: inline-flex;
+      height: 1rem;
+      align-items: end;
 
       img {
         margin-left: 0.25rem;
+        vertical-align: text-bottom;
       }
     }
 

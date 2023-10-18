@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
 import Store from 'electron-store';
-import chatKey, { MessagesKey } from '../renderer/screens/chat/constants';
+import chatKey from '../renderer/screens/chat/constants';
 import { getRandomNumber, getSenderId } from '../renderer/utils';
 
 const store = new Store();
@@ -15,18 +15,30 @@ ipcMain.on('electron-store-set', (event, key, value) => {
 });
 
 ipcMain.on('electron-store-add-message', (event, value, chatId) => {
-  const messageKey = `${MessagesKey}_${chatId}`;
-  const messages = store.get(messageKey);
-  const message = {
-    id: getRandomNumber(),
-    text: value,
-    createdAt: new Date(),
-    senderId: getSenderId(store, messages, chatId),
-    seen: true, // todo - to change seen property dynamically need to implement online chat, not offline
-  };
+  function getMessage(messages) {
+    return {
+      id: getRandomNumber(),
+      text: value,
+      createdAt: new Date(),
+      senderId: getSenderId(store, messages, chatId),
+      seen: true, // todo - to change seen property dynamically need to implement online chat, not offline
+    };
+  }
 
-  if (!messages) store.set(messageKey, [message]);
-  else store.set(messageKey, [...messages, message]);
+  const chats = store.get(chatKey);
+  const chatWithMessages = chats.map((chat) => {
+    if (chat.id === chatId && !chat.messages) {
+      return { ...chat, messages: [getMessage([])] };
+    }
+    if (chat.id === chatId) {
+      return {
+        ...chat,
+        messages: [...chat.messages, getMessage(chat.messages)],
+      };
+    }
+    return chat;
+  });
+  store.set(chatKey, chatWithMessages);
 });
 
 ipcMain.on('electron-store-add-chat', (event, value) => {

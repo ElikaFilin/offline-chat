@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import RightMessageTail from '../../../../assets/images/right-message-tail.svg';
 import LeftMessageTail from '../../../../assets/images/left-message-tail.svg';
 import SeenMessageIcon from '../../../../assets/icons/seen-message-icon.svg';
-import { Props } from './interfacws';
+import { Props } from './interfaces';
 import styles from './message-list.module.scss';
 
 export default function MessageList({ messageList, newMessage }: Props) {
@@ -29,7 +29,7 @@ export default function MessageList({ messageList, newMessage }: Props) {
 
   return (
     <div className={styles.wrapper} ref={messageListRef}>
-      {messageList.map((message) => {
+      {messageList?.map((message) => {
         const isUserMessage = isMessageBelongsToLoggedUser(message.senderId);
         return (
           <div
@@ -37,12 +37,12 @@ export default function MessageList({ messageList, newMessage }: Props) {
             key={message.id}
           >
             {message.text}
-            <span className={styles.time}>
+            <time className={styles.time}>
               {moment(message.createdAt).format('LT')}
               {isUserMessage && message.seen && (
                 <img src={SeenMessageIcon} alt="seen" />
               )}
-            </span>
+            </time>
             <img
               className={styles[getTailClassName(isUserMessage)]}
               src={getTailImage(isUserMessage)}

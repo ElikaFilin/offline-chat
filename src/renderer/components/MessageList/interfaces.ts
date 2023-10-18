@@ -1,6 +1,6 @@
 import { Message } from '../ChatItem/interfaces';
 
 export interface Props {
-  messageList: Message[];
+  messageList: Message[] | [] | undefined;
   newMessage: string;
 }

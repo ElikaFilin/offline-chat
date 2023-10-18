@@ -1,49 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './chat.module.scss';
 import NewMessageIcon from '../../../../assets/icons/new-message-icon.svg';
-import { getRandomNumber } from '../../utils';
+import { getRandomChatData, getRandomNumber } from '../../utils';
 import { ChatList } from '../../components';
-import chatKey, { MessagesKey } from './constants';
+import chatKey from './constants';
 import Dialog from '../../components/Dialog/Dialog';
-import { ChatData, Message } from '../../components/ChatItem/interfaces';
-import Avatar from '../../../../assets/images/avatar.png';
+import { ChatData } from '../../components/ChatItem/interfaces';
 import { useElectronStore } from '../../hooks/ElectronStoreContext';
+import Avatar from '../../../../assets/images/avatar.png';
 
 export default function ChatScreen() {
-  const [openedChat, setOpenedChat] = useState<ChatData>();
+  const [openedChat, setOpenedChat] = useState<ChatData>(null);
   const [newMessage, setNewMessage] = useState<string>('');
-  const [messageList, setMessageList] = useState<Message[] | []>([]);
   const { forceRerender } = useElectronStore();
 
-  const handleAddChatButton = () => {
-    if (window.electron.store.get(chatKey).length) return;
-    const chatData = {
-      id: getRandomNumber(),
-      name: 'Darryl',
-      avatar: Avatar,
-    };
+  const handleAddChatButton = async () => {
+    const chatData = await getRandomChatData();
     window.electron.store.addChat(chatData);
     setOpenedChat(chatData);
+    setNewMessage('');
   };
 
   const handleSendMessage = () => {
     if (newMessage) {
       window.electron.store.addMessage(newMessage, openedChat?.id);
+      const chatElement = window.electron.store
+        .get(chatKey)
+        .find((chat) => chat.id === openedChat.id);
+      setOpenedChat(chatElement);
       forceRerender();
-      setMessageList(
-        window.electron.store.get(`${MessagesKey}_${openedChat?.id}`)
-      );
       setNewMessage('');
     }
   };
+
+  useEffect(() => {
+    if (!window.electron.store.get(chatKey).length) {
+      const chatData = {
+        id: getRandomNumber(),
+        name: 'Darryl',
+        avatar: Avatar,
+      };
+      window.electron.store.addChat(chatData);
+      setOpenedChat(chatData);
+      setNewMessage('');
+    }
+  }, []);
 
   return (
     <section className={styles.sidebar}>
       <ChatList
         chats={window.electron.store.get(chatKey)}
-        chatMessages={messageList}
         setOpenedChat={setOpenedChat}
-        messageList={messageList}
+        openedChat={openedChat}
       />
       {openedChat && (
         <Dialog
@@ -51,7 +59,6 @@ export default function ChatScreen() {
           chat={openedChat}
           setNewMessage={setNewMessage}
           newMessage={newMessage}
-          messageList={messageList}
         />
       )}
       <button

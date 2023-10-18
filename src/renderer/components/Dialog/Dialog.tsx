@@ -11,7 +11,6 @@ export default function Dialog({
   setNewMessage,
   newMessage,
   handleSendMessage,
-  messageList,
 }: Props) {
   const t = useTranslate();
 
@@ -25,7 +24,7 @@ export default function Dialog({
         <img src={chat.avatar} alt="avatar" />
         <span>{chat.name}</span>
       </header>
-      <MessageList messageList={messageList} newMessage={newMessage} />
+      <MessageList messageList={chat?.messages} newMessage={newMessage} />
       <div className={styles['input-wrapper']}>
         <Input
           customClassNames="conversation-input"

@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import Store from 'electron-store';
 import { Message } from '../components/ChatItem/interfaces';
+import config from '../config';
 
 export default function getCustomClassNames(classNames, stylesObj) {
   return classNames.map((name) => stylesObj[name]);
@@ -44,4 +45,28 @@ export function getSenderId(
     return chatId;
   }
   return userData.id;
+}
+
+async function randomAPIRequest(url: string) {
+  try {
+    const response = await fetch(`${config.RANDOM_API_HOST}/${url}`);
+    const json = await response.json();
+    if (!response.ok) {
+      toast.error(`${json}`);
+      return { error: json };
+    }
+    return json;
+  } catch (error) {
+    toast.error(`${error}`);
+    return { error };
+  }
+}
+
+export async function getRandomChatData() {
+  const { results } = await randomAPIRequest('api');
+  return {
+    id: getRandomNumber(),
+    name: results[0]?.name?.first,
+    avatar: results[0]?.picture?.thumbnail,
+  };
 }

@@ -6,8 +6,8 @@ $padding: 1.5rem;
   display: flex;
   padding: 0 $padding;
   align-items: center;
-  background: var(--colors-tint-light-primary);
-  color: var(--colors-text-secondary);
+  background: var(--colors-background-light-secondary);
+  color: var(--colors-text-primary);
   border: 0;
   position: relative;
 
@@ -15,6 +15,7 @@ $padding: 1.5rem;
     margin: 0.25rem 1rem 0.25rem 0;
     width: 3.5rem;
     height: 3.5rem;
+    border-radius: 50%;
   }
 
   .text-box {
@@ -46,4 +47,9 @@ $padding: 1.5rem;
       right: 1.5rem;
     }
   }
+}
+
+.selected-chat {
+  background: var(--colors-tint-light-primary);
+  color: var(--colors-text-secondary);
 }

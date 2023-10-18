@@ -1,17 +1,21 @@
 import ChatItem from '../ChatItem/ChatItem';
 import { Props } from './interfaces';
 
-export default function ChatList({ chats, setOpenedChat, messageList }: Props) {
+export default function ChatList({ chats, setOpenedChat, openedChat }: Props) {
   return (
     <>
-      {chats.map((chat) => (
-        <ChatItem
-          chat={chat}
-          messageList={messageList}
-          key={chat.id}
-          onClick={() => setOpenedChat(chat)}
-        />
-      ))}
+      {chats.map((chat) => {
+        return (
+          <ChatItem
+            chat={chat}
+            key={chat.id}
+            onClick={() => {
+              setOpenedChat(chat);
+            }}
+            openedChat={openedChat}
+          />
+        );
+      })}
     </>
   );
 }
